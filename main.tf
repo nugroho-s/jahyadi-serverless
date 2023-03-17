@@ -21,7 +21,7 @@ resource "google_storage_bucket_object" "archive" {
 }
 
 resource "google_cloudfunctions_function" "function" {
-  name        = "function-test"
+  name        = var.function_name
   description = "My function"
   runtime     = "python39"
 

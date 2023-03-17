@@ -1,8 +1,13 @@
 import os
+import random
+import json
 from flask import escape, jsonify
 import functions_framework
 from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
+
+with open('quotes.json') as json_file:
+    quotes = json.load(json_file)
 
 def hello_world(name):
     return 'Hello {}!'.format(escape(name or "World"))
@@ -16,7 +21,7 @@ def handle_interaction(request):
         return jsonify({
             "type": 4,
             "data": {
-                "content": "hello"
+                "content": random.choice(quotes)
             }
         })
 
@@ -39,9 +44,6 @@ def hello_http(request):
     """
     request_json = request.get_json(silent=True)
     print(request_json)
-
-    print("path is {}-".format(request.path))
-    print("request is : {}".format(request_json))
 
     if (request.path is '/'):
         return hello_world(request.args["name"] if "name" in request.args else None)
